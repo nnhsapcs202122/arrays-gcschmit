@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<!--from: https://cloud.google.com/blog/products/maps-platform/how-use-distance-matrix-api -->
+
+<head>
+	<style>		/* Set the size of the div element that contains the map */
+		#map {
+			height: 600px;  /* The height is 400 pixels */
+		 	width: 800px;  /* The width is 600 pixels */
+		}
+		#matrix {
+			color:green;
+			font-size: 20px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+<div id="progress">
+	<p>gathering data...</p>
+</div>
+
+<!--The div element for the map -->
+<div id="map">
+</div>
+<!--The div element for the distance matrix -->
+<div id="table">
+</div>
+<!--The pre element for the Java literal for city objects -->
+<pre id="citiesLatLongLiteral">
+</pre>
+<!--The pre element for the Java literal for the distance matrix -->
+<pre id="distanceLiteral">
+</pre>
+<!--The pre element for the Java constants for the min/max lat/long -->
+<pre id="latLongConstants">
+</pre>
+
+<script>
+	// specify your API key here as well as at the bottom of the file
+	// DO NOT commit your API key to GitHub as it could be exposed to others!
+	const GOOGLE_API_KEY = "!!! replace with your key !!!";
+	
+	// initialize and add the map
+	let map;
+	async function initMap() {
+		map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 5,
+	    	center: {lat: 41, lng: -86}
+		});
+	  
+		// display the new bounds of the map as it is updated
+		map.bounds_changed = () => {
+			let bounds = map.getBounds();
+			console.log(bounds.toString());
+			formatLatLongConstants(bounds, document.querySelector("#latLongConstants"));
+		};
+	  
+		// Feel free to replace the Big 10 cities with your own list of cities.
+		// 	NB: the Distance Matrix Services limits queries to a maximum of 25 cities
+		let cities = [
+			"Evanston, IL",			// Northwestern
+			"Bloomington, IN",		// Indiana
+			"College Park, MD",		// Maryland
+			"Ann Arbor, MI",			// Michigan
+			"East Lansing, MI",		// Michigan State
+			"Columbus, OH",			// Ohio State
+			"State College, PA",		// Penn State
+			"New Brunswick, NJ",		// Rutgers
+			"Champaign, IL",			// Illinois
+			"Iowa City, IA",			// Iowa
+			"Minneapolis, MN",		// Minnesota
+			"Lincoln, NE",			// Nebraska
+			"West Lafayette, IN",		// Purdue
+			"Madison, WI"				// Wisconsin
+		];
+
+		// encode the cities such that they can be included as parameters in the URL
+		let citiesEncoded = cities.map( city => {
+			return city.replace(", ", "+").replace(" ", "%20");
+		});
+	
+		// preinitialize the array since it is critical that the elements in this array
+		//		correspond to those in the cities array
+		let citiesLatLong = Array.from({length : cities.length});
+	
+		// should use google.maps.Geocoder instead???
+		citiesEncoded.forEach((cityEncoded, index) => {
+			fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + cityEncoded +
+				"&key=" + GOOGLE_API_KEY).then(response => response.json()).then(data => {
+					// location of one city
+					let position = data.results[0].geometry.location;
+					citiesLatLong[index] = position;
+					
+					// create marker for a city
+					let mk = new google.maps.Marker({position: position, map: map});
+					
+					formatLatLongLiteral(citiesLatLong, cities, document.querySelector("#citiesLatLongLiteral"));
+			});
+		});
+
+		// NB: the Distance Matrix Service limits queries to a maximum of 100 elements; so,
+		//		invoke it multiple times as necessary and combine the results
+		let maxOrigins = Math.floor(100 / cities.length);
+		let distanceMatrix = { "rows": [] };
+	
+		const service = new google.maps.DistanceMatrixService();
+
+		for (let i = 0; i < cities.length; i += maxOrigins) {
+			const matrixOptions = {
+				origins: cities.slice(i, Math.min(cities.length, i + maxOrigins)),
+				destinations: cities,
+				travelMode: 'DRIVING',
+				unitSystem: google.maps.UnitSystem.IMPERIAL
+			};
+		
+			service.getDistanceMatrix(matrixOptions, (response, status) => {
+				if (status !== "OK") {
+					console.log("Error with distance matrix: " + status);
+					
+					// by decrementing i, we are basically retrying the request...
+					i -= maxOrigins;
+				}
+				else {
+					distanceMatrix.rows = distanceMatrix.rows.concat(response.rows);
+					formatTable(cities, distanceMatrix, document.querySelector("#table"));
+					formatDistanceLiteral(distanceMatrix, document.querySelector("#distanceLiteral"));
+				}
+			});
+			
+			// sleep for a second to avoid rate limit errors
+			await sleep(1000);
+		}
+		
+		// display that all data has been gathered
+		document.querySelector("#progress").innerHTML = "<p>all data gathered</p>";
+	}
+	
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+		  
+	function formatTable(cities, distanceMatrix, div) {
+		div.innerHTML = "";
+		div.style.display = "grid";
+		div.style.gridTemplateColumns = `repeat(${cities.length + 1}, 1fr)`;
+		
+		div.appendChild(document.createElement("span"));
+		
+		cities.forEach(city => {
+			let columnHeader = document.createElement("span");
+			columnHeader.innerHTML = city;
+			div.appendChild(columnHeader);
+		});
+		
+		distanceMatrix.rows.forEach((row, index) => {
+			let rowHeader = document.createElement("span");
+			rowHeader.innerHTML = cities[index];
+			div.appendChild(rowHeader);
+			
+			row.elements.forEach(element => {
+				let cell = document.createElement("span");
+				cell.innerHTML = element.distance.text;
+				div.appendChild(cell);
+			});
+		});
+	}
+	
+	function formatLatLongLiteral(citiesLatLong, cities, pre) {
+		pre.innerHTML = "    // replace literals in BigTenData.java with these\n";
+		pre.innerHTML += "    //     or create a new class and refactor references to BigTenData\n";
+		pre.innerHTML += "    private static final City[] cities = new City[] {\n";
+		
+		citiesLatLong.forEach((city, index) => {
+			if(city) {
+				pre.innerHTML += `            new City(${city.lat}, ${city.lng}, "${cities[index]}", "${cities[index]}"),\n`;
+			}
+		});
+		
+		pre.innerHTML += "        };";
+	}
+	
+	function formatDistanceLiteral(distanceMatrix, pre) {
+		pre.innerHTML = "    private static final double[][] distanceMatrix = new double[][]{\n";
+		
+		distanceMatrix.rows.forEach(row => {
+			pre.innerHTML += "            { ";
+			row.elements.forEach(element => {
+				pre.innerHTML += (element.distance.value * 0.000621371) + ", ";
+			});
+			pre.innerHTML += "},\n";
+		});
+		
+		pre.innerHTML += "    };";
+	}
+	
+	function formatLatLongConstants(bounds, pre) {
+		pre.innerHTML = "    // replace constants in Map.java with these\n";
+		pre.innerHTML += `    private static final double MIN_LAT = ${bounds.Za.j};\n`;
+		pre.innerHTML += `    private static final double MAX_LAT = ${bounds.Za.i};\n`;
+		pre.innerHTML += `    private static final double MIN_LNG = ${bounds.Ua.i};\n`;
+		pre.innerHTML += `    private static final double MAX_LNG = ${bounds.Ua.j};\n`;
+	}
+		  
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=!!! replace with your key !!!&amp;callback=initMap">
+</script>
+
+</body>
+
+</html>
