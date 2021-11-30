@@ -96,19 +96,19 @@ public class CommonArrayAlgorithms
      */
     public static void printElementSeparators()
     {
-        int[] array = createRandomArray( 10, 50 );
+        int[] array = createRandomArray( 10, 2 );
         System.out.println("");
         System.out.print("[");
-        for(int a: array)
+        for(int i = 0; i < array.length; i++)
         {
-            if(a == array[array.length-1]){
-                System.out.print(a);
+            if(i == array.length-1){
+                System.out.print(array[i]);
             }
             else{
-                System.out.print(a + "|");
+                System.out.print(array[i] + "|");
             }
         }
-        System.out.print("]");
+        System.out.println("]");
 
     }
 
@@ -121,7 +121,19 @@ public class CommonArrayAlgorithms
      */
     public static int linearSearch( int valueToFind )
     {
-        return 0;
+        int[] randArray = createRandomArray(10, 15);
+        int num = -1;
+        printArray(randArray);
+        for(int i = 0; i < randArray.length; i++)
+        {
+            if(randArray[i] == valueToFind)
+            {
+                num = i;
+                break;
+            }
+        }
+        System.out.println(num);
+        return num;
     }
 
     /*
@@ -133,7 +145,7 @@ public class CommonArrayAlgorithms
      */
     public static int countLessThan( int limit )
     {
-        int[] array = createRandomArray(20,10);
+        int[] array = createRandomArray(50,10);
         int count = 0;
         for (int value:array)
         {
@@ -142,6 +154,8 @@ public class CommonArrayAlgorithms
                 count+=1;
             }
         }
+        printArray(array);
+        System.out.println(count);
         return count;
     }
 
@@ -154,8 +168,8 @@ public class CommonArrayAlgorithms
     public static int findMax() 
     {
         int[] array = createRandomArray(10, 100);
-        int max = 0;
-        for(int i = 0; i < array.length; i++) {
+        int max = array[0];
+        for(int i = 0; i < array.length; i++) {     // could use enhanced for loop
             if(array[i] > max) {
                 max = array[i];
             }
@@ -163,7 +177,6 @@ public class CommonArrayAlgorithms
         printArray(array);
         System.out.println("Max: " + max);
         return max;
-
     }
 
     /*
@@ -183,16 +196,9 @@ public class CommonArrayAlgorithms
         {
             secondArray[i] = firstArray[(firstArray.length - 1) - i];
         }
-
-        for (int printArray1 : firstArray)
-        {
-            System.out.println(printArray1);
-        }
-
-        for (int printArray2 : secondArray)
-        {
-            System.out.println(printArray2);
-        }
+        
+        printArray(firstArray);
+        printArray(secondArray);
 
         return secondArray;
     }
