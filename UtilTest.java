@@ -1,9 +1,9 @@
 
 
-import static org.junit.Assert.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * The test class UtilTest.
@@ -25,7 +25,7 @@ public class UtilTest
      *
      * Called before every test case method.
      */
-    @Before
+    @BeforeEach
     public void setUp()
     {
     }
@@ -35,7 +35,7 @@ public class UtilTest
      *
      * Called after every test case method.
      */
-    @After
+    @AfterEach
     public void tearDown()
     {
     }
@@ -46,8 +46,7 @@ public class UtilTest
         for(int i = 0; i < 1000; i++)
         {
             int value = Util.randRange(1, 10);
-            assertTrue("value (" + value + ") must be in the range [1, 10)",
-                    (value >= 1 && value < 10));
+            assertTrue((value >= 1 && value < 10), "value (" + value + ") must be in the range [1, 10)");
         }
     }
     
