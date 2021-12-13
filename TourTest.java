@@ -1,8 +1,8 @@
 
-import static org.junit.Assert.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class TourTest
 {
     /**
-     * Default constructor for test class TourTest
+     * Default constructor for test class UtilTest
      */
     public TourTest()
     {
@@ -25,7 +25,7 @@ public class TourTest
      *
      * Called before every test case method.
      */
-    @Before
+    @BeforeEach
     public void setUp()
     {
     }
@@ -35,7 +35,7 @@ public class TourTest
      *
      * Called after every test case method.
      */
-    @After
+    @AfterEach
     public void tearDown()
     {
     }
@@ -110,7 +110,7 @@ public class TourTest
             assertEquals(prevCityIndices[index2], cityIndices[index1]);
         }
 
-        assertTrue("elements should be swapped a majority of the time", randCount >= 800);
+        assertTrue(randCount >= 800, "elements should be swapped a majority of the time");
     }
 
     @Test
@@ -127,7 +127,7 @@ public class TourTest
                 assertEquals(1, Util.count(cityIndices, j, 0, BigTenData.getCities().length));
             }
 
-            assertEquals("the first element must always be 0", 0, cityIndices[0]);
+            assertEquals(0, cityIndices[0], "the first element must always be 0");
             assertNotEquals(0.0, tour.getDistance());
             if(tour.getDistance() == prevDistance)
             {
@@ -136,7 +136,7 @@ public class TourTest
             prevDistance = tour.getDistance();
         }
 
-        assertTrue("consecutive random tours should be very rare", dupTourCount < 5);
+        assertTrue(dupTourCount < 5, "consecutive random tours should be very rare");
 
     }
 
@@ -150,7 +150,7 @@ public class TourTest
             cityIndices[i] = i;
         }
         tour.updateDistance();
-        assertEquals(5105.141, tour.getDistance(), 1e-3);
+        assertEquals(5105.1406, tour.getDistance(), 1e-3);
     }
 
     @Test
@@ -194,13 +194,13 @@ public class TourTest
             int[] cityIndices = child.getCityIndices();
             for(int j = 0; j < BigTenData.getCities().length; j++)
             {
-                assertEquals("value " + j + " missing in child",
-                        1, Util.count(cityIndices, j, 0, BigTenData.getCities().length));
+                assertEquals(1, Util.count(cityIndices, j, 0, BigTenData.getCities().length),
+                		"value " + j + " missing in child");
             }
 
-            assertEquals("the first element must always be 0", 0, cityIndices[0]);
-            assertArrayEquals("child expected to match parentA",
-                cityIndices, parentA.getCityIndices());
+            assertEquals(0, cityIndices[0], "the first element must always be 0");
+            assertArrayEquals(cityIndices, parentA.getCityIndices(),
+            		"child expected to match parentA");
 
         }
 
@@ -211,13 +211,13 @@ public class TourTest
             int[] cityIndices = child.getCityIndices();
             for(int j = 0; j < BigTenData.getCities().length; j++)
             {
-                assertEquals("value " + j + " missing in child",
-                        1, Util.count(cityIndices, j, 0, BigTenData.getCities().length));
+                assertEquals(1, Util.count(cityIndices, j, 0, BigTenData.getCities().length),
+                		"value " + j + " missing in child");
             }
 
-            assertEquals("the first element must always be 0", 0, cityIndices[0]);
-            assertArrayEquals("child expected to match parentB",
-                cityIndices, parentB.getCityIndices());
+            assertEquals(0, cityIndices[0], "the first element must always be 0");
+            assertArrayEquals(cityIndices, parentB.getCityIndices(),
+            		"child expected to match parentB");
 
         }
 
@@ -229,11 +229,11 @@ public class TourTest
                 int[] cityIndices = child.getCityIndices();
                 for(int j = 0; j < BigTenData.getCities().length; j++)
                 {
-                    assertEquals("value " + j + " missing in child",
-                        1, Util.count(cityIndices, j, 0, BigTenData.getCities().length));
+                    assertEquals(1, Util.count(cityIndices, j, 0, BigTenData.getCities().length),
+                    		"value " + j + " missing in child");
                 }
 
-                assertEquals("the first element must always be 0", 0, cityIndices[0]);
+                assertEquals(0, cityIndices[0], "the first element must always be 0");
             }
         }
     }
@@ -271,7 +271,7 @@ public class TourTest
         double prevDistance = 0;
         for(int i = 0; i < tours.length; i++)
         {
-            assertTrue("tours incorrectly compared", tours[i].getDistance() >= prevDistance);
+            assertTrue(tours[i].getDistance() >= prevDistance, "tours incorrectly compared");
             prevDistance = tours[i].getDistance();
         }
     }
