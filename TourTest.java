@@ -52,6 +52,7 @@ public class TourTest
         {
             assertEquals(0, cityIndices[i]);
         }
+        assertEquals(0, tour.getDistance());
     }
 
     @Test
@@ -63,11 +64,12 @@ public class TourTest
         {
             cityIndices[i] = i;
         }
+        tour1.updateDistance();
         Tour tour2 = new Tour(tour1);
 
         assertArrayEquals(tour1.getCityIndices(), tour2.getCityIndices());
         assertNotSame(tour1.getCityIndices(), tour2.getCityIndices());
-        assertNotEquals(0.0, tour2.getDistance());
+        assertEquals(tour1.getDistance(), tour2.getDistance());
     }
 
     @Test
@@ -75,8 +77,13 @@ public class TourTest
     {
         int randCount = 0;
 
-        Tour tour = Tour.createRandomTour();
+        Tour tour = new Tour();
         int[] cityIndices = tour.getCityIndices();
+        for(int i = 0; i < cityIndices.length; i++)
+        {
+            cityIndices[i] = i;
+        }
+        tour.updateDistance();
 
         for(int i = 0; i < 1000; i++)
         {
@@ -150,7 +157,7 @@ public class TourTest
             cityIndices[i] = i;
         }
         tour.updateDistance();
-        assertEquals(5105.1406, tour.getDistance(), 1e-3);
+        assertEquals(5105, tour.getDistance(), 10);
     }
 
     @Test
