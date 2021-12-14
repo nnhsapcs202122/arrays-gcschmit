@@ -150,7 +150,7 @@ public class TourTest
             cityIndices[i] = i;
         }
         tour.updateDistance();
-        assertEquals(5105.1406, tour.getDistance(), 1e-3);
+        assertEquals(5105, tour.getDistance(), 10);
     }
 
     @Test
