@@ -76,8 +76,13 @@ public class TourTest
     {
         int randCount = 0;
 
-        Tour tour = Tour.createRandomTour();
+        Tour tour = new Tour();
         int[] cityIndices = tour.getCityIndices();
+        for(int i = 0; i < cityIndices.length; i++)
+        {
+            cityIndices[i] = i;
+        }
+        tour.updateDistance();
 
         for(int i = 0; i < 1000; i++)
         {
