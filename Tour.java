@@ -69,7 +69,8 @@ public class Tour implements Comparable
      *      tour visited in the order specified in the cityIndices array. The distance includes
      *      the distance from the last city visited back to the first city (i.e. home).
      *      
-     *  tip: The BigTenData class contains the distance matrix.
+     *  tip: The BigTenData class contains the distance matrix; read the documentation for the
+     *				BigTenData.getDistanceMatrix method.
      */
     protected void updateDistance() 
     {
