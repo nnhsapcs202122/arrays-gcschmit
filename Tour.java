@@ -37,8 +37,10 @@ public class Tour implements Comparable
      *      the BigTenData class's cities array. 
      *  postcondition: The cityIndices array is initialized such that all elements have a value
      *      of 0.
+     *  postcondition: The distance instance variable is initialized to 0.
      *      
-     *  Other methods will populate the cityIndices array such that it contains a valid tour.
+     *  Other methods will populate the cityIndices array such that it contains a valid tour
+     *			and then update the distance.
      */
     protected Tour()
     {
@@ -49,8 +51,9 @@ public class Tour implements Comparable
      * Constructs a new Tour object by copying the specified tour.
      *      
      *  postcondition: The reference to the cityIndices array is NOT copied. This constructor
-     *      makes a new cityIndices array and then copies the value of each element from the
-     *      specified tour's cityIndices array to this tour's cityIndices array.
+     *      initializes the cityIndices array to a new array of the appropriate length
+     *		and then copies the value of each element from the specified tour's cityIndices
+     *		array to this tour's cityIndices array.
      *  postcondition: This tour's distance must equal the specified tour's distance.
      *      
      *  @param tour     the tour from which to copy
