@@ -52,6 +52,7 @@ public class TourTest
         {
             assertEquals(0, cityIndices[i]);
         }
+        assertEquals(0, tour.getDistance());
     }
 
     @Test
