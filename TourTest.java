@@ -63,11 +63,12 @@ public class TourTest
         {
             cityIndices[i] = i;
         }
+        tour1.updateDistance();
         Tour tour2 = new Tour(tour1);
 
         assertArrayEquals(tour1.getCityIndices(), tour2.getCityIndices());
         assertNotSame(tour1.getCityIndices(), tour2.getCityIndices());
-        assertNotEquals(0.0, tour2.getDistance());
+        assertEquals(tour1.getDistance(), tour2.getDistance());
     }
 
     @Test
