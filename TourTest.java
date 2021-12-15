@@ -157,7 +157,11 @@ public class TourTest
             cityIndices[i] = i;
         }
         tour.updateDistance();
-        assertEquals(5105, tour.getDistance(), 30);
+        double dist1 = tour.getDistance();
+        assertEquals(5105, dist1, 30);
+        tour.updateDistance();
+        double dist2 = tour.getDistance();
+        assertEquals(dist1, dist2, 1, "consecutive calls to updateDistance are not equal");
     }
 
     @Test
@@ -202,12 +206,12 @@ public class TourTest
             for(int j = 0; j < BigTenData.getCities().length; j++)
             {
                 assertEquals(1, Util.count(cityIndices, j, 0, BigTenData.getCities().length),
-                		"value " + j + " missing in child");
+                        "value " + j + " missing in child");
             }
 
             assertEquals(0, cityIndices[0], "the first element must always be 0");
             assertArrayEquals(cityIndices, parentA.getCityIndices(),
-            		"child expected to match parentA");
+                    "child expected to match parentA");
 
         }
 
@@ -219,12 +223,12 @@ public class TourTest
             for(int j = 0; j < BigTenData.getCities().length; j++)
             {
                 assertEquals(1, Util.count(cityIndices, j, 0, BigTenData.getCities().length),
-                		"value " + j + " missing in child");
+                        "value " + j + " missing in child");
             }
 
             assertEquals(0, cityIndices[0], "the first element must always be 0");
             assertArrayEquals(cityIndices, parentB.getCityIndices(),
-            		"child expected to match parentB");
+                    "child expected to match parentB");
 
         }
 
@@ -237,7 +241,7 @@ public class TourTest
                 for(int j = 0; j < BigTenData.getCities().length; j++)
                 {
                     assertEquals(1, Util.count(cityIndices, j, 0, BigTenData.getCities().length),
-                    		"value " + j + " missing in child");
+                            "value " + j + " missing in child");
                 }
 
                 assertEquals(0, cityIndices[0], "the first element must always be 0");
