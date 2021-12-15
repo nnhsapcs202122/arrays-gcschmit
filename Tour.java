@@ -145,8 +145,8 @@ public class Tour implements Comparable
      *      At a high level the array copying takes place in three stages:
      *      <pre>
      *        child[    0 .. x1-1     ]  = this    [    0 .. x1-1     ]
-     *        child[   x1 .. x2       ]  = parentB [   x1 .. x2       ]
-     *        child[ x2+1 .. length-1 ]  = this    [ x2+1 .. length-1 ]
+     *        child[   x1 .. x2-1     ]  = parentB [   x1 .. x2-1     ]
+     *        child[  x2 .. length-1  ]  = this    [  x2 .. length-1  ]
      *      </pre>
      *      
      *      The potential problem is that after we copy the array segments we may have an
