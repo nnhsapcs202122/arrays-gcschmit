@@ -37,8 +37,10 @@ public class Tour implements Comparable
      *      the BigTenData class's cities array. 
      *  postcondition: The cityIndices array is initialized such that all elements have a value
      *      of 0.
+     *  postcondition: The distance instance variable is initialized to 0.
      *      
-     *  Other methods will populate the cityIndices array such that it contains a valid tour.
+     *  Other methods will populate the cityIndices array such that it contains a valid tour
+     *			and then update the distance.
      */
     protected Tour()
     {
@@ -49,9 +51,14 @@ public class Tour implements Comparable
      * Constructs a new Tour object by copying the specified tour.
      *      
      *  postcondition: The reference to the cityIndices array is NOT copied. This constructor
-     *      makes a new cityIndices array and then copies the value of each element from the
-     *      specified tour's cityIndices array to this tour's cityIndices array.
+     *      initializes the cityIndices array to a new array of the appropriate length
+     *		and then copies the value of each element from the specified tour's cityIndices
+     *		array to this tour's cityIndices array.
      *  postcondition: This tour's distance must equal the specified tour's distance.
+     *
+     *	tip: Visibility (e.g., private) applies to classes, not objects. A class can access
+     *			private instance variables of any object of that class, not just "this"
+     *			object (e.g., tour.cityIndices is permitted).
      *      
      *  @param tour     the tour from which to copy
      */
@@ -66,7 +73,8 @@ public class Tour implements Comparable
      *      tour visited in the order specified in the cityIndices array. The distance includes
      *      the distance from the last city visited back to the first city (i.e. home).
      *      
-     *  tip: The BigTenData class contains the distance matrix.
+     *  tip: The BigTenData class contains the distance matrix; read the documentation for the
+     *				BigTenData.getDistanceMatrix method.
      */
     protected void updateDistance() 
     {
@@ -137,8 +145,8 @@ public class Tour implements Comparable
      *      At a high level the array copying takes place in three stages:
      *      <pre>
      *        child[    0 .. x1-1     ]  = this    [    0 .. x1-1     ]
-     *        child[   x1 .. x2       ]  = parentB [   x1 .. x2       ]
-     *        child[ x2+1 .. length-1 ]  = this    [ x2+1 .. length-1 ]
+     *        child[   x1 .. x2-1     ]  = parentB [   x1 .. x2-1     ]
+     *        child[  x2 .. length-1  ]  = this    [  x2 .. length-1  ]
      *      </pre>
      *      
      *      The potential problem is that after we copy the array segments we may have an
