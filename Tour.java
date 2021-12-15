@@ -55,6 +55,10 @@ public class Tour implements Comparable
      *		and then copies the value of each element from the specified tour's cityIndices
      *		array to this tour's cityIndices array.
      *  postcondition: This tour's distance must equal the specified tour's distance.
+     *
+     *	tip: Visibility (e.g., private) applies to classes, not objects. A class can access
+     *			private instance variables of any object of that class, not just "this"
+     *			object (e.g., tour.cityIndices is permitted).
      *      
      *  @param tour     the tour from which to copy
      */
