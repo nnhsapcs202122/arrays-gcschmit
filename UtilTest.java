@@ -45,9 +45,26 @@ public class UtilTest
     {
         for(int i = 0; i < 1000; i++)
         {
-            int value = Util.randRange(1, 10);
-            assertTrue((value >= 1 && value < 10), "value (" + value + ") must be in the range [1, 10)");
+            int value = Util.randRange(5, 15);
+            assertTrue((value >= 5 && value < 15), "value (" + value + ") must be in the range [5, 15)");
         }
+        
+        final int MIN = 5;
+        final int MAX = 15;
+        final int RANGE = MAX-MIN;
+        final int ITERATIONS = 100000;     
+        final int TOLERANCE = ITERATIONS / 20;
+        
+        int[] frequencies = new int[RANGE];
+        for(int i = 0; i < ITERATIONS; i++)
+        {
+            frequencies[Util.randRange(MIN, MAX) - MIN]++;
+        }
+        for(int i = 0; i < RANGE; i++)
+        {
+        	assertEquals(ITERATIONS / RANGE, frequencies[i], TOLERANCE,
+        			"value (" + (i+MIN) + ") wasn't generated with the expected frequency");
+		}
     }
     
     @Test
