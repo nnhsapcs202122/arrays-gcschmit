@@ -162,6 +162,18 @@ public class TourTest
         tour.updateDistance();
         double dist2 = tour.getDistance();
         assertEquals(dist1, dist2, 1, "consecutive calls to updateDistance are not equal");
+        
+        int[] cityIndices2 = { 0, 1, 3, 5, 7, 9, 11, 13, 2, 4, 6, 8, 10, 12 };
+        for(int i = 0; i < cityIndices.length; i++)
+        {
+            cityIndices[i] = cityIndices2[i];
+        }
+        tour.updateDistance();
+        dist1 = tour.getDistance();
+        assertEquals(6740, dist1, 30);
+        tour.updateDistance();
+        dist2 = tour.getDistance();
+        assertEquals(dist1, dist2, 1, "consecutive calls to updateDistance are not equal");
     }
 
     @Test
