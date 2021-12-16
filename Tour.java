@@ -226,16 +226,17 @@ public class Tour implements Comparable
     /**
      * Compares this tour to the specified tour based on their distances.
      * 
-     *  The obj parameter must be casted to a Tour.
+     *  The obj parameter must be casted to a Tour:
+     *		Tour otherTour = (Tour) obj;
      *  
-     *  If this tour's distance is less than the specified tour's distance, a value less than 0
+     *  If this tour's distance is less than the other tour's distance, a value less than 0
      *      must be returned.
-     *  If this tour's distance is greater than the specified tour's distance, a value greater
+     *  If this tour's distance is greater than the other tour's distance, a value greater
      *      than 0 must be returned.
      *  If both tours' distances are equal, 0 must be returned.
      *  
      *  @return a values less than 0, greater than 0, or 0 if this tour's distance is less than,
-     *      greater than, or equal to the specified tour's
+     *      greater than, or equal to the other tour's
      */
     @Override
     public int compareTo(Object obj) 
