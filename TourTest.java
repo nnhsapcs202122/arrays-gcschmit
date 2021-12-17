@@ -91,6 +91,9 @@ public class TourTest
             int[] prevCityIndices = prevTour.getCityIndices();
 
             tour.swapRandTwo();
+            
+            assertEquals(0, cityIndices[0], "the element at index 0 should never be swapped");
+            
             int index1 = 0, index2 = 0;
 
             for(int j = 0; j < cityIndices.length; j++)
