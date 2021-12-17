@@ -286,19 +286,22 @@ public class TourTest
     @Test
     public void testCompareTo()
     {
-        Tour[] tours = new Tour[1000];
-        for(int i = 0; i < tours.length; i++)
-        {
-            tours[i] = Tour.createRandomTour();
-        }
-        
-        Arrays.sort(tours);
-        
-        double prevDistance = 0;
-        for(int i = 0; i < tours.length; i++)
-        {
-            assertTrue(tours[i].getDistance() >= prevDistance, "tours incorrectly compared");
-            prevDistance = tours[i].getDistance();
-        }
+		Tour[] tours = new Tour[1000];
+		for(int i = 0; i < tours.length; i++)
+		{
+			tours[i] = Tour.createRandomTour();
+		}
+	
+		Arrays.sort(tours);
+	
+		double prevDistance = 0;
+		for(int i = 0; i < tours.length; i++)
+		{
+			assertTrue(tours[i].getDistance() >= prevDistance, "tours incorrectly compared");
+			prevDistance = tours[i].getDistance();
+		}
+		
+		Tour equalTour = new Tour(tours[0]);
+		assertEquals(0, equalTour.compareTo(tours[0]));
     }
 }
