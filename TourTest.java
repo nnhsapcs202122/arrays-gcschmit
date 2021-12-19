@@ -285,14 +285,14 @@ public class TourTest
         int[] randomTour = { 0, 1, 10, 13, 6, 8, 2, 7, 4, 11, 9, 5, 3, 12 };
         for(int i = 0; i < cityIndices.length; i++)
         {
-            cityIndices[i] = cityIndices.length - i - 1;
+            cityIndices[i] = randomTour[i];
         }
         tour.updateDistance();
         
         actualCities = tour.getCities();
         for(int i = 0; i < expectedCities.length; i++)
         {
-            assertEquals(expectedCities[i], actualCities[randomTour[i]]);
+            assertEquals(expectedCities[randomTour[i]], actualCities[i]);
         }
     }
     
