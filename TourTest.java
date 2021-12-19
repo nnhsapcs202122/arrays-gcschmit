@@ -281,27 +281,40 @@ public class TourTest
         {
             assertEquals(expectedCities[i], actualCities[expectedCities.length - i - 1]);
         }
+        
+        int[] randomTour = { 0, 1, 10, 13, 6, 8, 2, 7, 4, 11, 9, 5, 3, 12 };
+        for(int i = 0; i < cityIndices.length; i++)
+        {
+            cityIndices[i] = cityIndices.length - i - 1;
+        }
+        tour.updateDistance();
+        
+        actualCities = tour.getCities();
+        for(int i = 0; i < expectedCities.length; i++)
+        {
+            assertEquals(expectedCities[i], actualCities[randomTour[i]]);
+        }
     }
     
     @Test
     public void testCompareTo()
     {
-		Tour[] tours = new Tour[1000];
-		for(int i = 0; i < tours.length; i++)
-		{
-			tours[i] = Tour.createRandomTour();
-		}
-	
-		Arrays.sort(tours);
-	
-		double prevDistance = 0;
-		for(int i = 0; i < tours.length; i++)
-		{
-			assertTrue(tours[i].getDistance() >= prevDistance, "tours incorrectly compared");
-			prevDistance = tours[i].getDistance();
-		}
-		
-		Tour equalTour = new Tour(tours[0]);
-		assertEquals(0, equalTour.compareTo(tours[0]));
+        Tour[] tours = new Tour[1000];
+        for(int i = 0; i < tours.length; i++)
+        {
+            tours[i] = Tour.createRandomTour();
+        }
+    
+        Arrays.sort(tours);
+    
+        double prevDistance = 0;
+        for(int i = 0; i < tours.length; i++)
+        {
+            assertTrue(tours[i].getDistance() >= prevDistance, "tours incorrectly compared");
+            prevDistance = tours[i].getDistance();
+        }
+        
+        Tour equalTour = new Tour(tours[0]);
+        assertEquals(0, equalTour.compareTo(tours[0]));
     }
 }
